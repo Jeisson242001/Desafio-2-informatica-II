@@ -1,0 +1,4 @@
+#ifndef MEMORYTRACKER_H
+#define MEMORYTRACKER_H
+
+#endif // MEMORYTRACKER_H
