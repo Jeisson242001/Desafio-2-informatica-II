@@ -15,7 +15,9 @@ class Player {
     int  _currentIndex;
     bool _repeat;
     RandomLCG _rng;
-    Ring<int> _history;      // historial (M=6 por defecto)
+    Ring<int> _history;      // historial (M=6 por defecto) - lo mantenemos
+    DynArray<int> _histList; // historial lineal navegable (índices de _all)
+    int _histIndex;          // posición actual en _histList (-1 = vacío)
     unsigned _songsSinceAd;  // anuncio cada 2 canciones
 
 public:
