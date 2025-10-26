@@ -1,9 +1,0 @@
-# nick|type(0 std,1 prem)|city|country|regDate
-julian_std|0|Medellin|CO|2025-09-01
-julian_pro|1|Medellin|CO|2025-09-01
-amigo_prem|1|Bogota|CO|2025-09-05
-rigo_std|0|Cali|CO|2025-09-03
-pedro_prem|1|Barranquilla|CO|2025-09-07
-ana_prem|1|Cartagena|CO|2025-09-09
-sofia_std|0|Bucaramanga|CO|2025-09-10
-diego_prem|1|Manizales|CO|2025-09-12
