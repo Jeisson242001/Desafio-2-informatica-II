@@ -1,0 +1,13 @@
+# id|category(C/B/A)|text
+ad01|C|Prueba gratis 7 dias
+ad02|B|2 meses al 50% para nuevos usuarios
+ad03|A|Auris con cancelacion de ruido
+ad04|C|Compra tu playlist en vinilo
+ad05|B|Audifonos Bluetooth con microfono
+ad06|A|Suscripcion anual con 30% OFF
+ad07|C|Concierto local este fin de semana
+ad08|B|Parlantes portatiles recargables
+ad09|A|Tarjeta regalo UdeATunes
+ad10|C|Clases de musica online
+ad11|B|Plan familiar: agrega 3 miembros
+ad12|A|Super bass studio edition
