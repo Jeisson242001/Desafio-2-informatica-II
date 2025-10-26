@@ -1,0 +1,4 @@
+# id5|name|age|country|followers|trendPos
+10001|Claudia Lorelle|28|CO|120000|5
+10003|Joe Arroyo|55|CO|300000|12
+10004|Carlos Vives|62|CO|800000|8
