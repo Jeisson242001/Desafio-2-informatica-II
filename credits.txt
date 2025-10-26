@@ -1,4 +1,4 @@
-# id5|role|first_name|last_name|affiliation_code
+# id9|role|first_name|last_name|affiliation_code
 100010101|Producer|Andres|Gomez|AFF0000001
 100010101|Musician|Claudia|Lorelle|AFF0000002
 100010101|Composer|Claudia|Lorelle|AFF0000003
