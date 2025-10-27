@@ -3,10 +3,7 @@
 
 #include <cstddef>  // size_t
 #include <new>      // ::operator new / placement new
-
-// Arreglo dinámico genérico SIN STL (solo std::string permitido en el proyecto).
-// Métodos: reserve, push_back, removeAt, at, size, capacity, clear.
-// Nota: at(idx) NO valida límites.
+#include "Iteration.h"
 
 template <typename T>
 class DynArray {
@@ -18,6 +15,7 @@ private:
     void reallocate(std::size_t newCap) {
         T* newData = (T*)::operator new(sizeof(T) * newCap);
         for (std::size_t i = 0; i < _size; ++i) {
+            ITER_STEP(1);
             new (newData + i) T(_data[i]); // copia
             _data[i].~T();
         }
@@ -33,8 +31,10 @@ public:
         if (other._size) {
             _data = (T*)::operator new(sizeof(T) * other._size);
             _capacity = _size = other._size;
-            for (std::size_t i = 0; i < _size; ++i)
+            for (std::size_t i = 0; i < _size; ++i){
+                ITER_STEP(1);
                 new (_data + i) T(other._data[i]);
+            }
         }
     }
 
@@ -46,8 +46,10 @@ public:
         if (other._size) {
             _data = (T*)::operator new(sizeof(T) * other._size);
             _capacity = _size = other._size;
-            for (std::size_t i = 0; i < _size; ++i)
+            for (std::size_t i = 0; i < _size; ++i){
+                ITER_STEP(1);
                 new (_data + i) T(other._data[i]);
+            }
         }
         return *this;
     }
@@ -62,6 +64,7 @@ public:
     }
 
     void push_back(const T& value) {
+        ITER_STEP(1);
         if (_size == _capacity)
             reallocate(_capacity ? _capacity * 2 : 4);
         new (_data + _size) T(value);
@@ -72,6 +75,7 @@ public:
         if (idx >= _size) return;
         _data[idx].~T();
         for (std::size_t i = idx; i + 1 < _size; ++i) {
+            ITER_STEP(1);
             new (_data + i) T(_data[i + 1]);
             _data[i + 1].~T();
         }
@@ -85,9 +89,10 @@ public:
     std::size_t capacity() const { return _capacity; }
 
     void clear() {
-        for (std::size_t i = 0; i < _size; ++i) _data[i].~T();
+        for (std::size_t i = 0; i < _size; ++i) { ITER_STEP(1); _data[i].~T(); }
         _size = 0;
     }
+
 };
 
 #endif // DYNARRAY_H

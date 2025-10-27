@@ -133,7 +133,6 @@ void Menu::mainLoopStandard(){
             // Si estamos en pausa global, no dejar arrancar aleatorio
             if (g_paused) { std::cout << "No puede iniciar Aleatorio mientras este en PAUSA. Reanude primero.\n"; continue; }
 
-            ITER_RESET();
             const unsigned K=5;
             for(unsigned i=0;i<K;++i){
                 Song* s = _player.playRandom();
@@ -184,9 +183,11 @@ void Menu::addFavorite(User* u){
     std::cout<<"Id canción: "; std::string id; std::getline(std::cin, id);
     Song* s = findSongById(id); if(!s){ std::cout<<"No existe.\n"; return; }
     if(FavoriteList* fl=u->favorites()){
-        fl->add(s); std::cout<<"Agregada.\n";
+        fl->add(s); ITER_STEP(1); std::cout<<"Agregada.\n";
         // persistir
         FileStore::saveFavorites(_dataDir + "/favorites.txt", _users);
+        std::cout << "[Recursos] iteraciones=" << ITER_VALUE() << "  mem=" << MemTrack::current() << " bytes\n";
+
     }
 }
 
@@ -195,9 +196,11 @@ void Menu::removeFavorite(User* u){
     std::cout<<"Índice a eliminar: "; std::string idxs; std::getline(std::cin, idxs);
     unsigned idx=(unsigned)std::atoi(idxs.c_str());
     u->favorites()->removeIndex(idx);
+    ITER_STEP(1);
     std::cout<<"Eliminado.\n";
     // persistir
     FileStore::saveFavorites(_dataDir + "/favorites.txt", _users);
+    std::cout << "[Recursos] iteraciones=" << ITER_VALUE() << "  mem=" << MemTrack::current() << " bytes\n";
 }
 
 void Menu::followPremium(User* u){
@@ -216,6 +219,7 @@ void Menu::followPremium(User* u){
         std::cout << "Ya sigues a " << p->nick() << ".\n";
     } else {
         u->follow(p); // reemplaza al anterior si había
+        ITER_STEP(1);
         std::cout<<"Ahora sigues a "<<p->nick()<<".\n";
         changedFollow = true;
     }
@@ -251,6 +255,7 @@ void Menu::unfollow(User* u){
         return;
     }
     u->follow(nullptr); // limpia el seguido
+    ITER_STEP(1);
     FileStore::saveFollows(_dataDir + "/follows.txt", _users); // persiste
     std::cout<<"Ahora no sigues a nadie.\n";
 }
@@ -274,7 +279,6 @@ void Menu::playFavoritesOrdered(User* u){
     FavoriteList merged = *u->favorites();
     if(User* f=u->follows()) if(f->favorites()) merged = merged + *(f->favorites());
     bool finished=false;
-    ITER_RESET();
     for(unsigned i=0;i<merged.size();++i){
         // adicional: si la pausa se activa entre canciones, el waitWithPause gestionará la espera
         Song* s = _player.playFavoritesOrdered(merged,i,&finished);
@@ -318,7 +322,6 @@ void Menu::playFavoritesRandom(User* u){
     }
 
     // Reproducir las primeras 'toPlay' índices resultantes
-    ITER_RESET();
     for (unsigned k = 0; k < toPlay; ++k) {
         unsigned sidx = idx[k];
         Song* s = merged.at(sidx);
@@ -388,12 +391,12 @@ void Menu::mainLoopPremium(){
         if(op=="2"){
             if (g_paused) { std::cout << "No puede pasar de cancion mientras este en PAUSA. Reanude primero.\n"; continue; }
 
-            else{ if(Song* s=_player.next()) printSong(s); continue; } }
+            else{ if(Song* s=_player.next()) printSong(s); std::cout << "[Recursos] iteraciones=" << ITER_VALUE() << "  mem=" << MemTrack::current() << " bytes\n"; continue; } }
 
         if(op=="3"){
             if (g_paused) { std::cout << "No puede devolver la cancion mientras este en PAUSA. Reanude primero.\n"; continue; }
 
-            else{ if(Song* s=_player.prev()) printSong(s); continue; } }
+            else{ if(Song* s=_player.prev()) printSong(s); std::cout << "[Recursos] iteraciones=" << ITER_VALUE() << "  mem=" << MemTrack::current() << " bytes\n"; continue; } }
 
         if(op=="4"){ _player.setRepeat(!_player.repeat()); std::cout<<"Repeat: "<<(_player.repeat()?"ON":"OFF")<<"\n"; continue; }
         if(op=="5"){ favoritesMenu(_currentUser); continue; }
@@ -401,7 +404,6 @@ void Menu::mainLoopPremium(){
         if(op=="7"){ playFavoritesRandom(_currentUser); continue; }
         if(op=="1"){
             if (g_paused) { std::cout << "No puede iniciar Aleatorio mientras este en PAUSA. Reanude primero.\n"; continue; }
-            ITER_RESET();
             const unsigned K=5;
             for(unsigned i=0;i<K;++i){
                 Song* s = _player.playRandom();

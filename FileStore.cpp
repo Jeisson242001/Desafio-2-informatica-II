@@ -19,6 +19,7 @@ bool FileStore::loadSongs(const std::string& path, DynArray<Song>& outSongs){
     std::string line;
     DynArray<std::string> parts;
     while(std::getline(in,line)){
+        ITER_STEP(1);
         line = StringUtil::trim(line);
         if(line.empty()||line[0]=='#') continue;
         StringUtil::split(line,'|',parts);
@@ -40,6 +41,7 @@ bool FileStore::loadAds(const std::string& path, AdManager& outAds){
     if(!in.is_open()) return false;
     std::string line; DynArray<std::string> parts;
     while(std::getline(in,line)){
+        ITER_STEP(1);
         line = StringUtil::trim(line);
         if(line.empty()||line[0]=='#') continue;
         StringUtil::split(line,'|',parts);
@@ -58,6 +60,7 @@ bool FileStore::loadUsers(const std::string& path, DynArray<User>& outUsers){
     if(!in.is_open()) return false;
     std::string line; DynArray<std::string> parts;
     while(std::getline(in,line)){
+        ITER_STEP(1);
         line = StringUtil::trim(line);
         if(line.empty()||line[0]=='#') continue;
         StringUtil::split(line,'|',parts);
@@ -77,6 +80,7 @@ bool FileStore::loadFavorites(const std::string& path, DynArray<User>& users, Dy
     if(!in.is_open()) return false;
     std::string line; DynArray<std::string> parts; DynArray<std::string> ids;
     while(std::getline(in,line)){
+        ITER_STEP(1);
         line = StringUtil::trim(line);
         if(line.empty()||line[0]=='#') continue;
         StringUtil::split(line,'|',parts);
@@ -99,6 +103,7 @@ bool FileStore::loadFollows(const std::string& path, DynArray<User>& users){
     if(!in.is_open()) return false;
     std::string line; DynArray<std::string> parts;
     while(std::getline(in,line)){
+        ITER_STEP(1);
         line = StringUtil::trim(line);
         if(line.empty()||line[0]=='#') continue;
         StringUtil::split(line,'|',parts);
@@ -132,6 +137,7 @@ bool FileStore::saveFavorites(const std::string& path, const DynArray<User>& use
     if(!out.is_open()) return false;
     writeLine(out, "# nick|id,id,id,...");
     for(unsigned i=0;i<users.size();++i){
+        ITER_STEP(1);
         const User& u = users.at(i);
         if(!u.isPremium()) continue;
         const FavoriteList* fl = u.favorites();
@@ -153,6 +159,7 @@ bool FileStore::saveFollows(const std::string& path, const DynArray<User>& users
     if(!out.is_open()) return false;
     writeLine(out, "# follower|followed");
     for(unsigned i=0;i<users.size();++i){
+        ITER_STEP(1);
         const User& u = users.at(i);
         const User* f = u.follows();
         if(!f) continue;

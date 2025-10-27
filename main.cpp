@@ -15,9 +15,9 @@ int main() {
 
     std::cout << "\n=== Resumen ===\n";
     std::cout << "Iteraciones: " << ITER_VALUE() << "\n";
-    std::cout << "Mem actual: " << MemTrack::current()
-              << "  alloc: " << MemTrack::totalAllocated()
-              << "  freed: " << MemTrack::totalFreed() << "\n";
+    std::cout << "bytes aun en uso: " << MemTrack::current()
+              << "  \nbytes solicitados en total: " << MemTrack::totalAllocated()
+              << "  \nbytes liberados: " << MemTrack::totalFreed() << "\n";
     std::cout << "== Fin ==\n";
     return 0;
 }

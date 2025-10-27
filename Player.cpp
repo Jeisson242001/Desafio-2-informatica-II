@@ -31,6 +31,7 @@ static void truncateAfter(DynArray<int>& arr, int idx) {
 
 Song* Player::playRandom() {
     if (count() == 0) return nullptr;
+    ITER_STEP(1);
 
     if (_repeat && _currentIndex >= 0) {
         // repetir la actual: añadimos entrada al Ring (compatibilidad) y también al historial navegable
@@ -66,6 +67,7 @@ Song* Player::playRandom() {
 
 Song* Player::next() {
     if (count() == 0) return nullptr;
+    ITER_STEP(1);
 
     // Si tenemos historial navegable y existe un "siguiente", avanzamos en el historial
     if (_histIndex >= 0 && _histIndex + 1 < (int)_histList.size()) {
@@ -122,6 +124,7 @@ Song* Player::prev() {
     }
 
     // retroceder en historial
+    ITER_STEP(1);
     --_histIndex;
     _currentIndex = _histList.at((std::size_t)_histIndex);
     Song* s = _all.at((std::size_t)_currentIndex);
@@ -134,6 +137,7 @@ Song* Player::playFavoritesOrdered(FavoriteList& list, unsigned startIndex, bool
     if (list.size() == 0) return nullptr;
     if (startIndex >= list.size()) { if (finishedOut) *finishedOut = true; return nullptr; }
     _currentIndex = -1; // no aplica índice global
+    ITER_STEP(1);
     Song* s = list.at(startIndex);
     // mantener compatibilidad con Ring historial original
     _history.push((int)startIndex);
@@ -144,6 +148,7 @@ Song* Player::playFavoritesOrdered(FavoriteList& list, unsigned startIndex, bool
 Song* Player::playFavoritesRandom(FavoriteList& list) {
     if (list.size() == 0) return nullptr;
     unsigned idx = _rng.uniform(list.size());
+    ITER_STEP(1);
     // no añadir al historial navegable (índices de favoritos no son índices del catálogo)
     _history.push((int)idx);
     Song* s = list.at(idx);
